@@ -6,3 +6,4 @@ astropy
 urllib3
 matplotlib-inline
 matplotlib
+scipy
