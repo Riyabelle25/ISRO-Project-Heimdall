@@ -31,6 +31,7 @@ try:
     st.pyplot(fig)
     # st.write(df)
 
+
     st.header("Data after Noise Reduction")
     filtered_time, filtered_rate = noise_reduction(time, rate)
     fig1, ax1 = plt.subplots()
@@ -38,6 +39,7 @@ try:
     # filtered_df = pd.DataFrame({'Time':filtered_time, 'Rate': filtered_rate}).astype(str)
     st.pyplot(fig1)
     # st.write(filtered_df)
+
 
     st.header("Peaks observed from Input Data")
     num_bursts, bursts_rate, bursts_time = get_and_segregate_peaks(filtered_time, filtered_rate)
@@ -53,6 +55,7 @@ try:
     # df_properties = pd.DataFrame({'Burst Rates': list(bursts_rate.values()), 'Burst Times': list(bursts_time.values())})    
     # st. write(df_properties)
     st.caption("There were %s peaks observed from today's LC data!" % num_bursts)
+
 
     st.header("Wavelet Analysis")
     df_analysis = {"mean":[], "stdev":[], "rise_time":[], "decay_time":[], "flare_duration":[], "peak_flux":[], "total_flux":[]}
@@ -70,6 +73,7 @@ try:
         df_analysis["total_flux"].append(params[6])
     # print(analysis)
     st.dataframe(pd.DataFrame(df_analysis).astype(str))
+
 
     st.header("LC Solar Flare Classification")
     df_classify = {"Classification":[]}
