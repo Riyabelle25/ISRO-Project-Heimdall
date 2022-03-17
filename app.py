@@ -1,6 +1,6 @@
 import streamlit as st
 from io import StringIO 
-
+import numpy as np
 import altair as alt
 import pandas as pd
 import altair as alt
@@ -28,7 +28,9 @@ def fits_io(path_to_fits):
     rate=fits_data.field("RATE")
     error = fits_data.field('ERROR')
     fracexp = fits_data.field('FRACEXP')
-    return time, rate
+    background_count = np.mean(rate)
+
+    return time, rate, background_count
 
 try:
     uploaded_file = st.file_uploader("Choose a file", type=['lc'])
@@ -36,29 +38,35 @@ try:
 
         # To read file as bytes:
         save_uploadedfile(uploaded_file)
-        time, rate = fits_io("cacheDir/%s" %uploaded_file.name)
+        time, rate, background_count = fits_io("cacheDir/%s" %uploaded_file.name)
         os.remove("cacheDir/%s" %uploaded_file.name)
 
 
-        # Can be used wherever a "file-like" object is accepted:
-        # dataframe = pd.read_csv(uploaded_file)
         # time, rate = fits_io('data/ch2_xsm_20211022_v1_level2.lc')
         # st.write(dataframe)
 
         st.header("Raw data input:")
-        df = pd.DataFrame({'Time': time, 'Rates': rate}).astype(str)   
-        fig, ax = plt.subplots()
-        ax.plot(time,rate)
-        st.pyplot(fig)
-        # st.write(df)
+        df = pd.DataFrame({'time':time/1e8,'rates':rate})
+        df = df.set_index(time/1e8)
+        # df.index = time/1e8
+        # fig, ax = plt.subplots()
+        # ax.plot(time,rate)
+        # st.pyplot(fig)
+        st.line_chart(df)
+        # st.write(df.astype(str))
+
+
+        st.header("Background Count is %d " %background_count)
 
 
         st.header("Data after Noise Reduction")
         filtered_time, filtered_rate = noise_reduction(time, rate)
-        fig1, ax1 = plt.subplots()
-        ax1.plot(filtered_time, filtered_rate)
-        # filtered_df = pd.DataFrame({'Time':filtered_time, 'Rate': filtered_rate}).astype(str)
-        st.pyplot(fig1)
+        # fig1, ax1 = plt.subplots()
+        # ax1.plot(filtered_time, filtered_rate)
+        filtered_df = pd.DataFrame({'Time':filtered_time/1e8, 'Rate': filtered_rate})
+        filtered_df = filtered_df.set_index(filtered_time/1e8)
+        st.line_chart(filtered_df)
+        # st.pyplot(fig1)
         # st.write(filtered_df)
 
 
@@ -70,28 +78,29 @@ try:
             #     x='burst rates',
             #     y='burst times'
             # )
-            fig, ax = plt.subplots()
-            ax.plot(bursts_time[i], bursts_rate[i])
-            cols[i].pyplot(fig)
+            # fig, ax = plt.subplots()
+            # ax.plot(bursts_time[i], bursts_rate[i])
+            # cols[i].pyplot(fig)
+            cols[i].line_chart(pd.DataFrame({"Times": bursts_time[i]/1e8, "Rates": bursts_rate[i]}, index=bursts_time[i]/1e8))
         # df_properties = pd.DataFrame({'Burst Rates': list(bursts_rate.values()), 'Burst Times': list(bursts_time.values())})    
         # st. write(df_properties)
         st.caption("There were %s peaks observed from today's LC data!" % num_bursts)
 
 
         st.header("Wavelet Analysis")
-        df_analysis = {"mean":[], "stdev":[], "rise_time":[], "decay_time":[], "flare_duration":[], "peak_flux":[], "total_flux":[]}
+        df_analysis = {"rise_time":[], "decay_time":[], "flare_duration":[], "peak_flux":[], "total_flux":[]}
         # df = pd.DataFrame({""})
         for key in bursts_rate.keys():
             rate = bursts_rate[key]
             time = bursts_time[key]
-            params=analyse_wavelets(time, rate)
-            df_analysis["mean"].append(params[0])
-            df_analysis["stdev"].append(params[1])
-            df_analysis["rise_time"].append(params[2])
-            df_analysis["decay_time"].append(params[3])
-            df_analysis["flare_duration"].append(params[4])
-            df_analysis["peak_flux"].append(params[5])
-            df_analysis["total_flux"].append(params[6])
+            params=analyse_wavelets(filtered_time, filtered_rate)
+            # df_analysis["mean"].append(params[0])
+            # df_analysis["stdev"].append(params[1])
+            df_analysis["rise_time"].append(params[0])
+            df_analysis["decay_time"].append(params[1])
+            df_analysis["flare_duration"].append(params[2])
+            df_analysis["peak_flux"].append(params[3])
+            df_analysis["total_flux"].append(params[4])
         # print(analysis)
         st.dataframe(pd.DataFrame(df_analysis).astype(str))
 
