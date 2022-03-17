@@ -25,12 +25,14 @@ def fits_io(path_to_fits):
 try:
     st.header("Raw data input:")
     time, rate = fits_io('data/ch2_xsm_20211022_v1_level2.lc')
-    # df = pd.DataFrame({'Time': time, 'Rates': rate}).astype(str)   
+    #data = {'time':time/1e8,'rates':rate}
+    df = pd.DataFrame({'time':time/1e8,'rates':rate})
+    #df = df.set_index(time/1e8)
+    st.line_chart(df)
     fig, ax = plt.subplots()
     ax.plot(time,rate)
     st.pyplot(fig)
-    # st.write(df)
-
+    st.write(df.astype(str))
 
     st.header("Data after Noise Reduction")
     filtered_time, filtered_rate = noise_reduction(time, rate)
