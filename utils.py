@@ -17,8 +17,9 @@ def fits_io(path_to_fits):
     rate=fits_data.field("RATE")
     error = fits_data.field('ERROR')
     fracexp = fits_data.field('FRACEXP')
+    background_count = np.mean(rate)
 
-    return time, rate
+    return time, rate, background_count
 
 
 def noise_reduction(time, rate):
@@ -115,7 +116,7 @@ def analyse_wavelets(time, rate):
     # Calculating total flux for each wavelet
     total_flux = simps(rate, dx = time[decay_end_idx]-time[rise_start_idx])
 
-    return mean, stdev, rise_time, decay_time, flare_duration, peak_flux, total_flux
+    return rise_time, decay_time, flare_duration, peak_flux, total_flux
 
 def classify_flare(peak_flux):
     """
