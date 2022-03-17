@@ -93,7 +93,7 @@ try:
         for key in bursts_rate.keys():
             rate = bursts_rate[key]
             time = bursts_time[key]
-            params=analyse_wavelets(filtered_time, filtered_rate)
+            params=analyse_wavelets(time, rate)
             # df_analysis["mean"].append(params[0])
             # df_analysis["stdev"].append(params[1])
             df_analysis["rise_time"].append(params[0])
