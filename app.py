@@ -1,4 +1,6 @@
 import streamlit as st
+from io import StringIO 
+
 import altair as alt
 import pandas as pd
 import altair as alt
@@ -6,8 +8,14 @@ from astropy.io import fits
 from urllib.error import URLError
 from utils import noise_reduction,get_and_segregate_peaks, analyse_wavelets, classify_flare
 import matplotlib.pyplot as plt
+import os
 
-@st.cache
+# @st.cache()
+def save_uploadedfile(uploadedfile):
+     with open(os.path.join("cacheDir",uploadedfile.name),"wb") as f:
+         f.write(uploadedfile.getbuffer())
+     return st.success("Saved File:{} to cacheDir".format(uploadedfile.name))
+
 def fits_io(path_to_fits):
     """
     I/O for fits files
@@ -23,27 +31,22 @@ def fits_io(path_to_fits):
     return time, rate
 
 try:
-    uploaded_file = st.file_uploader("Choose a file", type=['png','jpeg', 'lc'])
-    print(uploaded_file)
+    uploaded_file = st.file_uploader("Choose a file", type=['lc'])
     if uploaded_file is not None:
+
         # To read file as bytes:
-        bytes_data = uploaded_file.getvalue()
-        st.write(bytes_data)
+        save_uploadedfile(uploaded_file)
+        time, rate = fits_io("cacheDir/%s" %uploaded_file.name)
+        os.remove("cacheDir/%s" %uploaded_file.name)
 
-        # # To convert to a string based IO:
-        # stringio = StringIO(uploaded_file.getvalue().decode("utf-8"))
-        # st.write(stringio)
-
-        # # To read file as string:
-        # string_data = stringio.read()
-        # st.write(string_data)
 
         # Can be used wherever a "file-like" object is accepted:
-        dataframe = pd.read_csv(uploaded_file)
-        st.write(dataframe)
+        # dataframe = pd.read_csv(uploaded_file)
+        # time, rate = fits_io('data/ch2_xsm_20211022_v1_level2.lc')
+        # st.write(dataframe)
+
         st.header("Raw data input:")
-        time, rate = fits_io('data/ch2_xsm_20211022_v1_level2.lc')
-        # df = pd.DataFrame({'Time': time, 'Rates': rate}).astype(str)   
+        df = pd.DataFrame({'Time': time, 'Rates': rate}).astype(str)   
         fig, ax = plt.subplots()
         ax.plot(time,rate)
         st.pyplot(fig)
