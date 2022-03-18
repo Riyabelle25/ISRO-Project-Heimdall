@@ -33,7 +33,7 @@ def fits_io(path_to_fits):
     return time, rate, background_count
 
 try:
-    uploaded_file = st.file_uploader("Choose a file", type=['lc'])
+    uploaded_file = st.file_uploader("Choose a file", type=['lc','csv','ascii', 'txt'])
     if uploaded_file is not None:
 
         # To read file as bytes:

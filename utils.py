@@ -9,7 +9,7 @@ from scipy.integrate import simps
 def fits_io(path_to_file):
     """
     I/O for fits files
-    Input: ASCII/FITS/LC file path
+    Input: ASCII/FITS/LC/CSV/XLS file path
     Output: Time and Rate arrays
     """
     if path_to_file.endswith('.ascii'):
