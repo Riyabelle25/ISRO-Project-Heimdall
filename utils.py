@@ -101,7 +101,7 @@ def analyse_wavelets(time, rate):
     Input: filtered time and rate arrays
     Output: desired Parameters
     """
-    peak_flux=max(rate)
+    peak_count=max(rate)
     peak_idx = np.where(rate==max(rate))[0][0]
     print(peak_idx)
     y_values = (rate-np.mean(rate)) / np.std(rate)
@@ -112,20 +112,20 @@ def analyse_wavelets(time, rate):
     arr_prev_rev = arr_prev_rev[::-1]
     for i in arr_prev_rev:
       rise_start_idx=arr_prev_rev[::-1].index(i)
-      if i<=0.1*peak_flux:
+      if i<=0.1*peak_count:
         break
   
     arr_fwd = list(rate[peak_idx:])
     for i in arr_fwd:
       decay_end_idx = arr_fwd.index(i)+peak_idx
-      if i<=0.1*peak_flux:
+      if i<=0.1*peak_count:
         break
     rise_time = time[peak_idx]-time[rise_start_idx]
     decay_time = time[decay_end_idx]-time[peak_idx]
     flare_duration = rise_time+decay_time
-    peak_flux = int(max(rate))
-    # Calculating total flux for each wavelet
-    total_flux = simps(rate, dx = time[decay_end_idx]-time[rise_start_idx])
+    peak_count = int(max(rate))
+    # Calculating total count for each wavelet
+    total_count = simps(rate, dx = time[decay_end_idx]-time[rise_start_idx])
 
     return rise_time, decay_time, flare_duration, peak_count, total_count
 
