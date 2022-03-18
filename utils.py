@@ -30,7 +30,7 @@ def noise_reduction(time, rate):
     """
     n = len(time)
     rate_filtered = []
-    window = 100
+    window = 500
     for i in range(n-window):
         rate_filtered.append(np.mean(rate[i:i+window]))
     rate_filtered = np.array(rate_filtered)
