@@ -16,6 +16,8 @@ def fits_io(path_to_file):
       data = Table.read(path_to_file, format='ascii')
     elif path_to_file.endswith('.lc') or path_to_file.endswith('.fits'):
       data = Table.read(path_to_file, format='fits')
+    elif path_to_file.endswith('.csv'):
+      data = Table.read(path_to_file, format='csv')
     time=data.field("TIME")
     rate=data.field("RATE")
     error = data.field('ERROR')
