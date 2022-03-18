@@ -1,5 +1,24 @@
-# ISRO-Project-Heimdall
-A stand-alone web-based application 👩‍💻 using <a href="https://streamlit.io/">Streamlit.io</a> to identify and categorize X-ray bursts.
+#  MP_ISRO_T8
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+## Contents
+- [Overview](#overview)
+- [Features](#features)
+- [Download](#download)
+- [Tech Stack](#tech-stack)
+- [Development](#development)
+
+
+## Overview
+**Project Heimdall** is a stand-alone web-based application using <a href="https://streamlit.io/">Streamlit.io</a> to identify and categorize X-ray bursts. 
+
+Submission for the Inter-IIT Tech Meet's Mid Prep event: ISRO'S Web-Based Automatic Identifiaction Of Solar Bursts In X-Ray Light Curves 
+
+Team: **MP_ISRO_T8**
+
+Visit 
+
+
 ### Visit our deployed webapp <a href="https://project-isro-heimdall.herokuapp.com/">here</a> <br/>
 ### To setup locally🔧⚙️
 <br/>
