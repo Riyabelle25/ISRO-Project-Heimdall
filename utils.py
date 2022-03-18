@@ -7,21 +7,22 @@ from scipy.signal import find_peaks, peak_prominences
 from scipy.integrate import simps
 
 def fits_io(path_to_file):
-    """
-    I/O for fits files
-    Input: ASCII/FITS/LC file path
-    Output: Time and Rate arrays
-    """
-    if path_to_file.endswith('.ascii'):
+    if path_to_file.endswith('.txt'):
       data = Table.read(path_to_file, format='ascii')
+      time=data.field("TIME")
+      rate=data.field("RATE")
     elif path_to_file.endswith('.lc') or path_to_file.endswith('.fits'):
       data = Table.read(path_to_file, format='fits')
+      time=data.field("TIME")
+      rate=data.field("RATE")
     elif path_to_file.endswith('.csv'):
       data = Table.read(path_to_file, format='csv')
-    time=data.field("TIME")
-    rate=data.field("RATE")
-    error = data.field('ERROR')
-    fracexp = data.field('FRACEXP')
+      time=data.field("TIME")
+      rate=data.field("RATE")
+    elif path_to_file.endswith('.xlsx'):
+      data = pd.read_excel(path_to_file)
+      time=data["TIME"]
+      rate=data["RATE"]
     background_count = np.mean(rate)
     return time, rate, background_count
 
