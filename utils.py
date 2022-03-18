@@ -25,7 +25,7 @@ def fits_io(path_to_file):
       data = Table.read(path_to_file, format='csv')
       time=data.field("TIME")
       rate=data.field("RATE")
-    elif path_to_file.endswith('.xlsx') or path_to_file.endswith('.xls') or path_to_file.endswith('.xlsm') or path_to_file.endswith('.xlsb') orpath_to_file.endswith('.odt') or path_to_file.endswith('.odf'):
+    elif path_to_file.endswith('.xlsx') or path_to_file.endswith('.xls') or path_to_file.endswith('.xlsm') or path_to_file.endswith('.xlsb') or path_to_file.endswith('.odt') or path_to_file.endswith('.odf'):
       data = pd.read_excel(path_to_file)
       time=data["TIME"]
       rate=data["RATE"]
