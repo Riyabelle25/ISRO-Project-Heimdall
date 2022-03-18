@@ -2,23 +2,25 @@ import numpy as np
 import matplotlib.pyplot as plt
 import astropy
 from astropy.io import fits
+from astropy.table import Table
 from scipy.signal import find_peaks, peak_prominences
 from scipy.integrate import simps
 
-def fits_io(path_to_fits):
+def fits_io(path_to_file):
     """
     I/O for fits files
-    Input: Fits file/lc file path
+    Input: ASCII/FITS/LC file path
     Output: Time and Rate arrays
     """
-    fits_lc = fits.open(path_to_fits)
-    fits_data = fits_lc[1].data
-    time=fits_data.field("TIME")
-    rate=fits_data.field("RATE")
-    error = fits_data.field('ERROR')
-    fracexp = fits_data.field('FRACEXP')
+    if path_to_file.endswith('.ascii'):
+      data = Table.read(path_to_file, format='ascii')
+    elif path_to_file.endswith('.lc') or path_to_file.endswith('.fits'):
+      data = Table.read(path_to_file, format='fits')
+    time=data.field("TIME")
+    rate=data.field("RATE")
+    error = data.field('ERROR')
+    fracexp = data.field('FRACEXP')
     background_count = np.mean(rate)
-
     return time, rate, background_count
 
 
