@@ -30,7 +30,7 @@ def noise_reduction(time, rate):
     """
     n = len(time)
     rate_filtered = []
-    window = 500
+    window = 100
     for i in range(n-window):
         rate_filtered.append(np.mean(rate[i:i+window]))
     rate_filtered = np.array(rate_filtered)
@@ -116,21 +116,21 @@ def analyse_wavelets(time, rate):
     # Calculating total flux for each wavelet
     total_flux = simps(rate, dx = time[decay_end_idx]-time[rise_start_idx])
 
-    return rise_time, decay_time, flare_duration, peak_flux, total_flux
+    return rise_time, decay_time, flare_duration, peak_count, total_count
 
-def classify_flare(peak_flux):
+def classify_flare(peak_count):
     """
     CLassifies the flare based on peak flux
     Input: peak flux of the flare
     Output: Class 
     """
-    if(peak_flux > 1e5):
+    if(peak_count > 1e5):
         return "X"
-    if(peak_flux > 1e4):
+    if(peak_count > 1e4):
         return "M"
-    if(peak_flux > 1e3):
+    if(peak_count > 1e3):
         return "C"
-    if(peak_flux > 1e2):
+    if(peak_count > 1e2):
         return "B"
     else:
         return "A"
