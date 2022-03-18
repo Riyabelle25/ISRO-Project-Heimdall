@@ -6,7 +6,7 @@ import pandas as pd
 import altair as alt
 from astropy.io import fits
 from urllib.error import URLError
-from utils import noise_reduction,get_and_segregate_peaks, analyse_wavelets, classify_flare
+from utils import fits_io, noise_reduction,get_and_segregate_peaks, analyse_wavelets, classify_flare
 import matplotlib.pyplot as plt
 import os
 
@@ -16,24 +16,24 @@ def save_uploadedfile(uploadedfile):
          f.write(uploadedfile.getbuffer())
      return st.success("Saved File:{} to cacheDir".format(uploadedfile.name))
 
-def fits_io(path_to_fits):
-    """
-    I/O for fits files
-    Input: Fits file/lc file path
-    Output: Time and Rate arrays
-    """
-    fits_lc = fits.open(path_to_fits)
-    fits_data = fits_lc[1].data
-    time=fits_data.field("TIME")
-    rate=fits_data.field("RATE")
-    error = fits_data.field('ERROR')
-    fracexp = fits_data.field('FRACEXP')
-    background_count = np.mean(rate)
+# def fits_io(path_to_fits):
+#     """
+#     I/O for fits files
+#     Input: Fits file/lc file path
+#     Output: Time and Rate arrays
+#     """
+#     fits_lc = fits.open(path_to_fits)
+#     fits_data = fits_lc[1].data
+#     time=fits_data.field("TIME")
+#     rate=fits_data.field("RATE")
+#     error = fits_data.field('ERROR')
+#     fracexp = fits_data.field('FRACEXP')
+#     background_count = np.mean(rate)
 
-    return time, rate, background_count
+#     return time, rate, background_count
 
 try:
-    uploaded_file = st.file_uploader("Choose a file", type=['lc','csv','ascii', 'txt'])
+    uploaded_file = st.file_uploader("Choose a file", type=['lc','csv','ascii', 'txt', 'xls', 'xlsx', 'xlsm', 'xlsb', 'odf', 'ods' and 'odt'])
     if uploaded_file is not None:
 
         # To read file as bytes:
