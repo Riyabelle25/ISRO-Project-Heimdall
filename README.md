@@ -24,7 +24,7 @@ streamlit run app.py
 ## Demo 
 
 First screen has an upload option for uploading .lc files, which will be used to extract data using <a href="https://www.astropy.org/">Astropy</a>, and further will be processed to draw graphs.
-![upload](https://user-images.githubusercontent.com/59011370/158999319-4a92d7d3-13e0-494b-b405-c8f3e5339ab9.png)
+![image](https://user-images.githubusercontent.com/59011370/159001786-a3c85b1b-b82e-4317-ae21-148c4ece3fe4.png)
 
 Tadaa 🥳 We are done 🥁
 
@@ -38,6 +38,7 @@ Finally, we have plotted our graphs and tables, with information about them as s
 ## Why use our app?
 
 Our web app has some beautiful dynamic graphs that are interactive, means draggable and scrollable. It also display coordinates on hovering, making the analysis very easy. <br/>
-![gif](https://user-images.githubusercontent.com/59011370/158999904-0eaace6a-d517-40ab-aa2f-e120a8ef5f81.gif)
+![gif](https://user-images.githubusercontent.com/59011370/159001213-2f3d8976-0ce8-4bea-abb7-5f154fbe6bdd.gif)
+<br/>
 
 Made with ❤️ by **Luminaires**
