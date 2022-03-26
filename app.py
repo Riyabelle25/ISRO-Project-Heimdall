@@ -18,7 +18,7 @@ def save_uploadedfile(uploadedfile):
 
 
 try:
-    uploaded_file = st.file_uploader("Choose a file", type=['lc','csv','ascii', 'txt', 'xls', 'xlsx', 'xlsm', 'xlsb', 'odf', 'ods' and 'odt'])
+    uploaded_file = st.file_uploader("Choose a file", type=['lc','csv','ascii', 'nc', 'txt', 'xls', 'xlsx', 'xlsm', 'xlsb', 'odf', 'ods' and 'odt'])
     if uploaded_file is not None:
 
         # To read file as bytes:
